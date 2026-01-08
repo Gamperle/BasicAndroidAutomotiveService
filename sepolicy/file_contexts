@@ -1,0 +1,4 @@
+# SELinux file contexts for MathService
+# Define the security context for the service APK
+
+/system/priv-app/MathService(/.*)?    u:object_r:system_file:s0

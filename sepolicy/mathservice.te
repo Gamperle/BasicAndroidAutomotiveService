@@ -1,0 +1,17 @@
+# SELinux policy for MathService
+# Define security policies for the math service
+
+type mathservice, domain;
+type mathservice_exec, exec_type, file_type, system_file_type;
+
+# Allow the service to be started
+init_daemon_domain(mathservice)
+
+# Allow binder communication
+binder_use(mathservice)
+binder_call(mathservice, system_server)
+binder_service(mathservice)
+
+# Allow logging
+allow mathservice logd:unix_stream_socket connectto;
+allow mathservice log_device:chr_file { write open };

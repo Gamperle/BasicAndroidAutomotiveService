@@ -1,0 +1,41 @@
+// Math Service AIDL
+aidl_interface {
+    name: "mathservice-aidl",
+    srcs: [
+        "aidl/com/example/mathservice/*.aidl",
+    ],
+    stability: "vintf",
+    owner: "mathservice",
+    backend: {
+        java: {
+            enabled: true,
+            platform_apis: true,
+        },
+        cpp: {
+            enabled: false,
+        },
+        ndk: {
+            enabled: false,
+        },
+    },
+}
+
+// Math Service APK
+android_app {
+    name: "MathService",
+    srcs: [
+        "src/**/*.java",
+    ],
+    static_libs: [
+        "mathservice-aidl-java",
+    ],
+    platform_apis: true,
+    certificate: "platform",
+    privileged: true,
+    optimize: {
+        enabled: false,
+    },
+    dex_preopt: {
+        enabled: false,
+    },
+}
