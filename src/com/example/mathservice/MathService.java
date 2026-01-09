@@ -25,6 +25,16 @@ public class MathService extends Service {
             Log.d(TAG, "subtract() called: " + a + " - " + b);
             return a - b;
         }
+
+        @Override
+        public String getInterfaceHash() {
+            return IMathService.HASH;
+        }
+
+        @Override
+        public int getInterfaceVersion() {
+            return IMathService.VERSION;
+        }
     };
 
     @Override

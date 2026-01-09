@@ -4,6 +4,7 @@ package com.example.mathservice;
  * AIDL interface for Math Service
  * Provides basic arithmetic operations
  */
+@VintfStability
 interface IMathService {
     /**
      * Add two integers

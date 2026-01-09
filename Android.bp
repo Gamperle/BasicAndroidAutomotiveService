@@ -13,9 +13,12 @@ aidl_interface {
         "aidl/com/example/mathservice/*.aidl",
     ],
     
-    // Mark as unstable (no API versioning/compatibility checks)
-    // Use this for internal interfaces that don't need vendor stability
-    unstable: true,
+    // VINTF stability: enforces API versioning and backward compatibility
+    // Required for vendor/system interfaces that need long-term stability
+    stability: "vintf",
+    
+    // Owner of the AIDL interface (used for stability tracking)
+    owner: "mathservice",
     
     // Backend language generation settings
     backend: {
@@ -51,8 +54,9 @@ android_app {
     
     // Static libraries to include (AIDL-generated Java code)
     // Links the generated IMathService interface into this APK
+    // V1 suffix indicates versioned AIDL (required for stable interfaces)
     static_libs: [
-        "mathservice-aidl-java",
+        "mathservice-aidl-V1-java",
     ],
     
     // Use platform APIs instead of public SDK APIs
