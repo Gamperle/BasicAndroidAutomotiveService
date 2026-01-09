@@ -1,41 +1,81 @@
-// Math Service AIDL
+// Math Service AIDL Interface Definition
+// Generates Java stubs/proxies from AIDL files for IPC communication
 aidl_interface {
+    // Module name used to reference this AIDL interface in other build rules
     name: "mathservice-aidl",
+    
+    // Base directory for AIDL package resolution (maps to package structure)
+    // Needed so "com.example.mathservice" package resolves correctly
+    local_include_dir: "aidl",
+    
+    // Source AIDL files to compile into Java/C++ interfaces
     srcs: [
         "aidl/com/example/mathservice/*.aidl",
     ],
-    stability: "vintf",
-    owner: "mathservice",
+    
+    // Mark as unstable (no API versioning/compatibility checks)
+    // Use this for internal interfaces that don't need vendor stability
+    unstable: true,
+    
+    // Backend language generation settings
     backend: {
         java: {
+            // Generate Java stubs for Java/Kotlin clients
             enabled: true,
+            
+            // Use Android platform APIs (not SDK APIs)
+            // Required for system services with privileged operations
             platform_apis: true,
         },
         cpp: {
+            // Don't generate C++ stubs (not needed for this service)
             enabled: false,
         },
         ndk: {
+            // Don't generate NDK stubs (not needed for this service)
             enabled: false,
         },
     },
 }
 
-// Math Service APK
+// Math Service APK Module
+// Builds the actual system service application
 android_app {
+    // Module name used by build system and for installation
     name: "MathService",
+    
+    // All Java source files to compile
     srcs: [
         "src/**/*.java",
     ],
+    
+    // Static libraries to include (AIDL-generated Java code)
+    // Links the generated IMathService interface into this APK
     static_libs: [
         "mathservice-aidl-java",
     ],
+    
+    // Use platform APIs instead of public SDK APIs
+    // Needed to access system-level APIs (ServiceManager, etc.)
     platform_apis: true,
+    
+    // Sign with platform certificate for system-level privileges
+    // Allows access to protected system resources
     certificate: "platform",
+    
+    // Install as privileged system app (/system/priv-app/)
+    // Grants additional permissions and capabilities
     privileged: true,
+    
+    // Optimization settings
     optimize: {
+        // Disable ProGuard/R8 optimization for easier debugging
         enabled: false,
     },
+    
+    // DEX preoptimization settings
     dex_preopt: {
+        // Disable ahead-of-time compilation for faster builds during development
         enabled: false,
     },
 }
